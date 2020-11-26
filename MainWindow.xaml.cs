@@ -96,23 +96,23 @@ namespace Dierentuin
 
         void Update()
         {
-            IEnumerable<Monkey> Monkeys = animals.OfType<Monkey>();
-            IEnumerable<Lion> lions = animals.OfType<Lion>();
-            IEnumerable<Elephant> elephants = animals.OfType<Elephant>();
-            List<animal> sum = new List<animal>();
+            List<Monkey> Monkeys = animals.OfType<Monkey>().ToList();
+            List<Lion> lions = animals.OfType<Lion>().ToList();
+            List<Elephant> elephants = animals.OfType<Elephant>().ToList();
+            List<animal> view = new List<animal>();
             if(Check_Monkey.IsChecked.Value)
             {
-                sum.AddRange(Monkeys);
+                view.AddRange(Monkeys);
             }
-            if (Check_Lion.IsChecked.Value)
+            if(Check_Lion.IsChecked.Value)
             {
-                sum.AddRange(lions);
+                view.AddRange(lions);
             }
-            if (Check_Elephant.IsChecked.Value)
+            if(Check_Elephant.IsChecked.Value)
             {
-                sum.AddRange(elephants);
+                view.AddRange(elephants);
             }
-            Animal_View.ItemsSource = sum.ToList();
+            Animal_View.ItemsSource = view.ToList();
         }
 
         void Tick(object sender, EventArgs e)
