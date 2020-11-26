@@ -16,19 +16,20 @@ using System.Windows.Threading;
 
 namespace Dierentuin
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         List<animal> animals = new List<animal>();
+        int dead = 0;
+
         public MainWindow()
         {
             InitializeComponent();
+
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Tick;
             timer.Start();
+
             Loaded += MainWindow_Loaded;
         }
 
@@ -38,53 +39,56 @@ namespace Dierentuin
         }
 
         void Animal_Add(object sender, RoutedEventArgs e)
-        { 
-            if(Animal_Kind.Text == "Monkey")
+        {
+            if (!string.IsNullOrEmpty(Animal_Name.Text))
             {
-                animal animal = new Monkey
+                if (Animal_Kind.Text == "Aap")
                 {
-                    name = Animal_Name.Text,
-                    energy = 60
-                };
-                animals.Add(animal);
-            }
-            else if(Animal_Kind.Text == "Lion")
-            {
-                animal animal = new Lion
+                    animal animal = new Monkey
+                    {
+                        name = Animal_Name.Text,
+                        energy = 60
+                    };
+                    animals.Add(animal);
+                }
+                else if (Animal_Kind.Text == "Leeuw")
                 {
-                    name = Animal_Name.Text,
-                    energy = 100
-                };
-                animals.Add(animal);
-            }
-            else
-            {
-                animal animal = new Elephant
+                    animal animal = new Lion
+                    {
+                        name = Animal_Name.Text,
+                        energy = 100
+                    };
+                    animals.Add(animal);
+                }
+                else
                 {
-                    name = Animal_Name.Text,
-                    energy = 100
-                };
-                animals.Add(animal);
+                    animal animal = new Elephant
+                    {
+                        name = Animal_Name.Text,
+                        energy = 100
+                    };
+                    animals.Add(animal);
+                }
             }
             update();
         }
 
-        void Feed_All(object sender, RoutedEventArgs e)
+        void Feed(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
-            foreach (var a in animals)
+            foreach (var animal in animals)
             {
-                if ((btn.Name == "M" || btn.Name == "A") && a.GetType() == typeof(Monkey))
+                if ((btn.Name == "M" || btn.Name == "A") && animal is Monkey)
                 {
-                    a.energy = a.Eat(2.5);
+                    animal.energy = animal.Eat();
                 }
-                else if ((btn.Name == "L" || btn.Name == "A") && a.GetType() == typeof(Lion))
+                else if ((btn.Name == "L" || btn.Name == "A") && animal.GetType() == typeof(Lion))
                 {
-                    a.energy = a.Eat(1);
+                    animal.energy = animal.Eat();
                 }
-                else if ((btn.Name == "E" || btn.Name == "A") && a.GetType() == typeof(Elephant))
+                else if ((btn.Name == "E" || btn.Name == "A") && animal.GetType() == typeof(Elephant))
                 {
-                    a.energy = a.Eat(0.5);
+                    animal.energy = animal.Eat();
                 }
             }
             update();
@@ -99,55 +103,62 @@ namespace Dierentuin
         {
             for (int i = animals.Count - 1; i >= 0; i--)
             {
-                if (animals[i].GetType() == typeof(Monkey))
-                {
-                    animals[i].energy = animals[i].UseEnergy(5);
-                }
-                else if (animals[i].GetType() == typeof(Lion))
-                {
-                    animals[i].energy = animals[i].UseEnergy(1);
-                }
-                else
-                {
-                    animals[i].energy = animals[i].UseEnergy(2);
-                }
+                animals[i].energy = animals[i].UseEnergy();
                 if (animals[i].energy < 0)
                 {
                     animals.Remove(animals[i]);
+                    dead++;
+                    Dead_Counter.Content = "Dieren die zijn gestorven = " + dead;
                 }
             }
             update();
         }
 
-        public class animal
+        abstract class animal
         {
             public string name {get; set;}
 
             public int energy { get; set; }
 
-            public int Eat(double devider)
+            public virtual int Eat()
             {
-                return energy + (int)(25 / devider);
+                return energy + 25;
             }
 
-            public int UseEnergy(double devider)
+            public abstract int UseEnergy();
+        }
+
+        sealed class Monkey : animal 
+        {
+            public override int Eat()
             {
-                return energy - (int)(10 / devider);
+                return energy + 10;
+            }
+
+            public override int UseEnergy()
+            {
+                return energy - 2;
             }
         }
 
-        public class Monkey : animal
+        sealed class Lion : animal
         {
-
-        }
-        public class Lion : animal
-        {
-
-        }
-        public class Elephant: animal
-        {
-
+            public override int UseEnergy()
+            {
+                return energy - 10;
+            }
         }
 
+        sealed class Elephant: animal 
+        {
+            public override int Eat()
+            {
+                return energy + 50;
+            }
+            public override int UseEnergy()
+            {
+                return energy - 5;
+            }
+        }
     }
 }
