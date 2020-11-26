@@ -13,14 +13,17 @@
                 <DataGridTextColumn x:Name="EnergyCollum" Binding="{Binding energy}" Header="energy" Width="400" />
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Naam Dier" Margin="500,0,0,400" Height="30" Width="80"/>
-        <TextBox x:Name="Animal_Name" Margin="750,0,0,400" Text="{Binding name}" TextWrapping="Wrap" Height="30" Width="170"/>
-        <ComboBox x:Name="Animal_Kind" Margin="700,0,0,300"  Height="30" Width="200">
+        <Label Content="Naam Dier" Margin="500,0,0,450" Height="30" Width="80"/>
+        <TextBox x:Name="Animal_Name" Margin="750,0,0,450" Text="{Binding name}" TextWrapping="Wrap" Height="30" Width="170"/>
+        <ComboBox x:Name="Animal_Kind" Margin="700,0,0,350"  Height="30" Width="200">
             <ComboBoxItem Content="Monkey" IsSelected="True"/>
             <ComboBoxItem Content="Lion"/>
             <ComboBoxItem Content="Elephant"/>
         </ComboBox>
-        <Button Click="Animal_Add" Content="Voeg dier toe" Margin="700,0,0,150" Height="70" Width="200"/>
-        <Button Click="Feed_All" Content="Voer alle dieren" Margin="700,50,0,0" Height="70" Width="200"/>
+        <Button Click="Animal_Add" Content="Voeg dier toe" Margin="700,0,0,200" Height="70" Width="200"/>
+        <Button x:Name="A" Click="Feed_All" Content="Voer alle dieren" Margin="700,0,0,0" Height="70" Width="200"/>
+        <Button x:Name="M" Click="Feed_All" Content="Voer alleen de apen" Margin="700,150,0,0" Height="70" Width="200"/>
+        <Button x:Name="L" Click="Feed_All" Content="Voer alleen de leeuwen" Margin="700,300,0,0" Height="70" Width="200"/>
+        <Button x:Name="E" Click="Feed_All" Content="Voer alleen de olifanten" Margin="700,450,0,0" Height="70" Width="200"/>
     </Grid>
 </Window>
