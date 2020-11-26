@@ -7,11 +7,17 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Title="Dierentuin" Height="600" Width="1000">
-    <Grid>
-        <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,740,490" Height="100" Width="200" />
-        <DataGrid x:Name="Animal_View" ItemsSource="{Binding Source=animals}" Margin="30,30,300,30" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" >
+    <Grid Margin="0,0,0,0">
+        <Grid Margin="30,30,730,30">
+            <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,0,400" Height="100" Width="200" />
+            
+            <CheckBox x:Name="Check_Monkey" Content="apen" IsChecked="True" Margin="30,70,100,400"/>
+            <CheckBox x:Name="Check_Lion" Content="Leeuwen" IsChecked="True" Margin="30,120,120,0"/>
+            <CheckBox x:Name="Check_Elephant" Content="Olifanten" IsChecked="True" Margin="30,170,120,0"/>
+        </Grid>
+        <DataGrid x:Name="Animal_View" ItemsSource="{Binding Source=animals}" Margin="250,30,300,30" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" >
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="NameCollum" Binding="{Binding name}" Header="Name" Width="400" />
+                <DataGridTextColumn x:Name="NameCollum" Binding="{Binding name}" Header="Name" Width="220" />
                 <DataGridTextColumn x:Name="EnergyCollum" Binding="{Binding energy}" Header="Energy" Width="400" />
             </DataGrid.Columns>
         </DataGrid>

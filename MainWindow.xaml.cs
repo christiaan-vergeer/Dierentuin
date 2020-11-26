@@ -35,7 +35,7 @@ namespace Dierentuin
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            update();
+            Update();
         }
 
         void Animal_Add(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ namespace Dierentuin
                     animals.Add(animal);
                 }
             }
-            update();
+            Update();
         }
 
         void Feed(object sender, RoutedEventArgs e)
@@ -82,21 +82,37 @@ namespace Dierentuin
                 {
                     animal.energy = animal.Eat();
                 }
-                else if ((btn.Name == "L" || btn.Name == "A") && animal.GetType() == typeof(Lion))
+                else if ((btn.Name == "L" || btn.Name == "A") && animal is Lion)
                 {
                     animal.energy = animal.Eat();
                 }
-                else if ((btn.Name == "E" || btn.Name == "A") && animal.GetType() == typeof(Elephant))
+                else if ((btn.Name == "E" || btn.Name == "A") && animal is Elephant)
                 {
                     animal.energy = animal.Eat();
                 }
             }
-            update();
+            Update();
         }        
 
-        void update()
+        void Update()
         {
-            Animal_View.ItemsSource = animals.ToList();
+            IEnumerable<Monkey> Monkeys = animals.OfType<Monkey>();
+            IEnumerable<Lion> lions = animals.OfType<Lion>();
+            IEnumerable<Elephant> elephants = animals.OfType<Elephant>();
+            List<animal> sum = new List<animal>();
+            if(Check_Monkey.IsChecked.Value)
+            {
+                sum.AddRange(Monkeys);
+            }
+            if (Check_Lion.IsChecked.Value)
+            {
+                sum.AddRange(lions);
+            }
+            if (Check_Elephant.IsChecked.Value)
+            {
+                sum.AddRange(elephants);
+            }
+            Animal_View.ItemsSource = sum.ToList();
         }
 
         void Tick(object sender, EventArgs e)
@@ -111,7 +127,7 @@ namespace Dierentuin
                     Dead_Counter.Content = "Dieren die zijn gestorven = " + dead;
                 }
             }
-            update();
+            Update();
         }
 
         abstract class animal
