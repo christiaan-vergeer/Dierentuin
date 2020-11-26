@@ -18,15 +18,17 @@ namespace Dierentuin
 {
     public partial class MainWindow : Window
     {
-        List<animal> animals = new List<animal>();
+        List<Animal> animals = new List<Animal>();
         int dead = 0;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(0.5)
+            };
             timer.Tick += Tick;
             timer.Start();
 
@@ -44,28 +46,28 @@ namespace Dierentuin
             {
                 if (Animal_Kind.Text == "Aap")
                 {
-                    animal animal = new Monkey
+                    Monkey animal = new Monkey
                     {
-                        name = Animal_Name.Text,
-                        energy = 60
+                        Name = Animal_Name.Text,
+                        Energy = 60
                     };
                     animals.Add(animal);
                 }
                 else if (Animal_Kind.Text == "Leeuw")
                 {
-                    animal animal = new Lion
+                    Animal animal = new Lion
                     {
-                        name = Animal_Name.Text,
-                        energy = 100
+                        Name = Animal_Name.Text,
+                        Energy = 100
                     };
                     animals.Add(animal);
                 }
                 else
                 {
-                    animal animal = new Elephant
+                    Animal animal = new Elephant
                     {
-                        name = Animal_Name.Text,
-                        energy = 100
+                        Name = Animal_Name.Text,
+                        Energy = 100
                     };
                     animals.Add(animal);
                 }
@@ -80,15 +82,15 @@ namespace Dierentuin
             {
                 if ((btn.Name == "M" || btn.Name == "A") && animal is Monkey)
                 {
-                    animal.energy = animal.Eat();
+                    animal.Energy = animal.Eat();
                 }
                 else if ((btn.Name == "L" || btn.Name == "A") && animal is Lion)
                 {
-                    animal.energy = animal.Eat();
+                    animal.Energy = animal.Eat();
                 }
                 else if ((btn.Name == "E" || btn.Name == "A") && animal is Elephant)
                 {
-                    animal.energy = animal.Eat();
+                    animal.Energy = animal.Eat();
                 }
             }
             Update();
@@ -99,7 +101,7 @@ namespace Dierentuin
             List<Monkey> Monkeys = animals.OfType<Monkey>().ToList();
             List<Lion> lions = animals.OfType<Lion>().ToList();
             List<Elephant> elephants = animals.OfType<Elephant>().ToList();
-            List<animal> view = new List<animal>();
+            List<Animal> view = new List<Animal>();
             if(Check_Monkey.IsChecked.Value)
             {
                 view.AddRange(Monkeys);
@@ -119,8 +121,8 @@ namespace Dierentuin
         {
             for (int i = animals.Count - 1; i >= 0; i--)
             {
-                animals[i].energy = animals[i].UseEnergy();
-                if (animals[i].energy < 0)
+                animals[i].Energy = animals[i].UseEnergy();
+                if (animals[i].Energy < 0)
                 {
                     animals.Remove(animals[i]);
                     dead++;
@@ -130,50 +132,50 @@ namespace Dierentuin
             Update();
         }
 
-        abstract class animal
+        abstract class Animal
         {
-            public string name {get; set;}
+            public string Name {get; set;}
 
-            public int energy { get; set; }
+            public int Energy { get; set; }
 
             public virtual int Eat()
             {
-                return energy + 25;
+                return Energy + 25;
             }
 
             public abstract int UseEnergy();
         }
 
-        sealed class Monkey : animal 
+        sealed class Monkey : Animal 
         {
             public override int Eat()
             {
-                return energy + 10;
+                return Energy + 10;
             }
 
             public override int UseEnergy()
             {
-                return energy - 2;
+                return Energy - 2;
             }
         }
 
-        sealed class Lion : animal
+        sealed class Lion : Animal
         {
             public override int UseEnergy()
             {
-                return energy - 10;
+                return Energy - 10;
             }
         }
 
-        sealed class Elephant: animal 
+        sealed class Elephant: Animal 
         {
             public override int Eat()
             {
-                return energy + 50;
+                return Energy + 50;
             }
             public override int UseEnergy()
             {
-                return energy - 5;
+                return Energy - 5;
             }
         }
     }

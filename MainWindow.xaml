@@ -8,32 +8,34 @@
         ResizeMode="NoResize"
         Title="Dierentuin" Height="600" Width="1000">
     <Grid Margin="0,0,0,0">
-        <Grid Margin="30,30,730,30">
-            <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,0,400" Height="100" Width="200" />
-            
-            <CheckBox x:Name="Check_Monkey" Content="apen" IsChecked="True" Margin="30,70,100,400"/>
+        <Grid Margin="30,30,730,30" >
+            <Rectangle Margin="0,0,30,0" Stroke="Black"/>
+            <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,0,400" Height="100" Width="200" />            
+            <CheckBox x:Name="Check_Monkey" Content="Apen" IsChecked="True" Margin="30,70,100,400"/>
             <CheckBox x:Name="Check_Lion" Content="Leeuwen" IsChecked="True" Margin="30,120,120,0"/>
             <CheckBox x:Name="Check_Elephant" Content="Olifanten" IsChecked="True" Margin="30,170,120,0"/>
         </Grid>
         <DataGrid x:Name="Animal_View" ItemsSource="{Binding Source=animals}" Margin="250,30,300,30" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" >
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="NameCollum" Binding="{Binding name}" Header="Name" Width="220" />
-                <DataGridTextColumn x:Name="EnergyCollum" Binding="{Binding energy}" Header="Energy" Width="400" />
+                <DataGridTextColumn x:Name="NameCollum" Binding="{Binding Name}" Header="Name" Width="220" />
+                <DataGridTextColumn x:Name="EnergyCollum" Binding="{Binding Energy}" Header="Energy" Width="400" />
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Naam dier :" Margin="510,0,0,450" Height="30" Width="80"/>
-        <TextBox x:Name="Animal_Name" Margin="750,0,0,450" Text="{Binding name}" TextWrapping="Wrap" Height="30" Width="170"/>
-        <ComboBox x:Name="Animal_Kind" Margin="700,0,0,350"  Height="30" Width="200">
-            <ComboBoxItem Content="Aap" IsSelected="True"/>
-            <ComboBoxItem Content="Leeuw"/>
-            <ComboBoxItem Content="Olifant"/>
-        </ComboBox>
-        <Button Click="Animal_Add" Content="Voeg dier toe" Margin="700,0,0,200" Height="70" Width="200"/>
-        <Button x:Name="A" Click="Feed" Content="Voer alle dieren" Margin="700,0,0,0" Height="70" Width="200"/>
-        <Button x:Name="M" Click="Feed" Content="Voer alleen de apen" Margin="700,150,0,0" Height="70" Width="200"/>
-        <Button x:Name="L" Click="Feed" Content="Voer alleen de leeuwen" Margin="700,300,0,0" Height="70" Width="200"/>
-        <Button x:Name="E" Click="Feed" Content="Voer alleen de olifanten" Margin="700,450,0,0" Height="70" Width="200"/>
-        <Rectangle Margin="690,0,0,300" Stroke="Black" Height="200" Width="270"/>
-        <Rectangle Margin="690,220,0,0" Stroke="Black" Height="320" Width="270"/>
+        <Grid Margin="700,30,30,30">
+            <Rectangle Margin="0,0,0,310" Stroke="Black"/>
+            <Label Content="Naam dier :" Margin="0,0,170,450" Height="30" Width="80"/>
+            <TextBox x:Name="Animal_Name" Margin="70,0,0,450" Text="{Binding Name}" TextWrapping="Wrap" Height="30" Width="170"/>
+            <ComboBox x:Name="Animal_Kind" Margin="0,0,0,350"  Height="30" Width="200">
+                <ComboBoxItem Content="Aap" IsSelected="True"/>
+                <ComboBoxItem Content="Leeuw"/>
+                <ComboBoxItem Content="Olifant"/>
+            </ComboBox>
+            <Button Click="Animal_Add" Content="Voeg dier toe" Margin="0,0,0,220" Height="70" Width="200"/>
+            <Rectangle Margin="0,192,0,0" Stroke="Black"/>
+            <Button x:Name="A" Click="Feed" Content="Voer alle dieren" Margin="0,0,0,30" Height="70" Width="200"/>
+            <Button x:Name="M" Click="Feed" Content="Voer alleen de apen" Margin="0,120,0,0" Height="70" Width="200"/>
+            <Button x:Name="L" Click="Feed" Content="Voer alleen de leeuwen" Margin="0,270,0,0" Height="70" Width="200"/>
+            <Button x:Name="E" Click="Feed" Content="Voer alleen de olifanten" Margin="0,420,0,0" Height="70" Width="200"/>
+        </Grid>
     </Grid>
 </Window>
