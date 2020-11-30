@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Dierentuin
@@ -21,8 +14,7 @@ namespace Dierentuin
     {
         readonly List<Animal> animals = new List<Animal>();
         int dead = 0;
-        double sec = 0;
-        int min = 0;
+        double sec = 0; int min = 0;
         
         public MainWindow()
         {
@@ -35,9 +27,21 @@ namespace Dierentuin
             timer.Tick += Tick;
             timer.Start();
 
-            File.WriteAllText(@"log.txt", string.Empty);
+            using (StreamWriter outputFile = new StreamWriter("log.txt", true))
+            {
+                outputFile.WriteLine("---------------------------------------------------------------------------------------");
+                outputFile.WriteLine("Started new session on "+ DateTime.Now + ".");
+                outputFile.WriteLine("");
+            }
 
             Loaded += MainWindow_Loaded;
+        }
+
+        public void OnExit(object sender, CancelEventArgs e)
+        {
+            using StreamWriter outputFile = new StreamWriter("log.txt", true);
+            outputFile.WriteLine("");
+            outputFile.WriteLine("Ended session on " + DateTime.Now + ".");
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -51,7 +55,7 @@ namespace Dierentuin
             {
                 if (Animal_Kind.Text == "Aap")
                 {
-                    Monkey animal = new Monkey
+                    Animal animal = new Monkey
                     {
                         Name = Animal_Name.Text,
                         Energy = 60,
@@ -151,16 +155,30 @@ namespace Dierentuin
                 animals[i].Energy = animals[i].UseEnergy();
                 if (animals[i].Energy <= 0)
                 {
+                    dead++;
                     using (StreamWriter outputFile = new StreamWriter("log.txt", true))
                     {
                         outputFile.WriteLine(min.ToString("00") + ":" + sec.ToString("00") + " : " + animals[i].GetType().Name + " " + animals[i].Name + " is overleden, er zijn nu " + dead + " dieren overleden.");
                     }
                     animals.Remove(animals[i]);
-                    dead++;
                     Dead_Counter.Content = "Dieren die zijn gestorven = " + dead;
                 }
             }
             Update();
+        }
+
+        public void ViewLog(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", "log.txt");
+        }
+
+        public void DeleteLog ( object sender, EventArgs e)
+        {
+            File.WriteAllText(@"log.txt", string.Empty);
+            using StreamWriter outputFile = new StreamWriter("log.txt", true);
+            outputFile.WriteLine("---------------------------------------------------------------------------------------");
+            outputFile.WriteLine("Deleted logs and started new session on " + DateTime.Now + ".");
+            outputFile.WriteLine("");
         }
 
         abstract class Animal
