@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,11 @@ namespace Dierentuin
 {
     public partial class MainWindow : Window
     {
-        List<Animal> animals = new List<Animal>();
+        readonly List<Animal> animals = new List<Animal>();
         int dead = 0;
-
+        double sec = 0;
+        int min = 0;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +34,8 @@ namespace Dierentuin
             };
             timer.Tick += Tick;
             timer.Start();
+
+            File.WriteAllText(@"log.txt", string.Empty);
 
             Loaded += MainWindow_Loaded;
         }
@@ -49,8 +54,13 @@ namespace Dierentuin
                     Monkey animal = new Monkey
                     {
                         Name = Animal_Name.Text,
-                        Energy = 60
+                        Energy = 60,
+                        Icon = "Icons/monkey.png"
                     };
+                    using (StreamWriter outputFile = new StreamWriter("log.txt", true))
+                    {
+                        outputFile.WriteLine(min.ToString("00") + ":" + sec.ToString("00") + " : Monkey "+ animal.Name + " is toegevoegd.");
+                    }
                     animals.Add(animal);
                 }
                 else if (Animal_Kind.Text == "Leeuw")
@@ -58,8 +68,13 @@ namespace Dierentuin
                     Animal animal = new Lion
                     {
                         Name = Animal_Name.Text,
-                        Energy = 100
+                        Energy = 100,
+                        Icon = "Icons/lion.png"
                     };
+                    using (StreamWriter outputFile = new StreamWriter("log.txt", true))
+                    {
+                        outputFile.WriteLine(min.ToString("00") + ":" + sec.ToString("00") + " : Lion " + animal.Name + " is toegevoegd.");
+                    }
                     animals.Add(animal);
                 }
                 else
@@ -67,8 +82,13 @@ namespace Dierentuin
                     Animal animal = new Elephant
                     {
                         Name = Animal_Name.Text,
-                        Energy = 100
+                        Energy = 100,
+                        Icon= "Icons/elephant.png"
                     };
+                    using (StreamWriter outputFile = new StreamWriter("log.txt", true))
+                    {
+                        outputFile.WriteLine(min.ToString("00") + ":" + sec.ToString("00") + " : Elepahnt " + animal.Name + " is toegevoegd.");
+                    }
                     animals.Add(animal);
                 }
             }
@@ -98,13 +118,13 @@ namespace Dierentuin
 
         void Update()
         {
-            List<Monkey> Monkeys = animals.OfType<Monkey>().ToList();
+            List<Monkey> monkeys = animals.OfType<Monkey>().ToList();
             List<Lion> lions = animals.OfType<Lion>().ToList();
             List<Elephant> elephants = animals.OfType<Elephant>().ToList();
             List<Animal> view = new List<Animal>();
             if(Check_Monkey.IsChecked.Value)
             {
-                view.AddRange(Monkeys);
+                view.AddRange(monkeys);
             }
             if(Check_Lion.IsChecked.Value)
             {
@@ -119,11 +139,22 @@ namespace Dierentuin
 
         void Tick(object sender, EventArgs e)
         {
+            sec += 0.5;
+            if(sec > 60)
+            {
+                min++;
+                sec -= 60;
+            }
+
             for (int i = animals.Count - 1; i >= 0; i--)
             {
                 animals[i].Energy = animals[i].UseEnergy();
-                if (animals[i].Energy < 0)
+                if (animals[i].Energy <= 0)
                 {
+                    using (StreamWriter outputFile = new StreamWriter("log.txt", true))
+                    {
+                        outputFile.WriteLine(min.ToString("00") + ":" + sec.ToString("00") + " : " + animals[i].GetType().Name + " " + animals[i].Name + " is overleden, er zijn nu " + dead + " dieren overleden.");
+                    }
                     animals.Remove(animals[i]);
                     dead++;
                     Dead_Counter.Content = "Dieren die zijn gestorven = " + dead;
@@ -137,6 +168,8 @@ namespace Dierentuin
             public string Name {get; set;}
 
             public int Energy { get; set; }
+             
+            public string Icon { get; set; }
 
             public virtual int Eat()
             {

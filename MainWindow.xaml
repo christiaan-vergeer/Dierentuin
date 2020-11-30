@@ -10,13 +10,20 @@
     <Grid Margin="0,0,0,0">
         <Grid Margin="30,30,730,30" >
             <Rectangle Margin="0,0,30,0" Stroke="Black"/>
-            <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,0,400" Height="100" Width="200" />            
+            <Label x:Name="Dead_Counter"  Content="Dieren die zijn gestorven = 0" Margin="0,0,0,400" Height="100" Width="200" />
             <CheckBox x:Name="Check_Monkey" Content="Apen" IsChecked="True" Margin="30,70,100,400"/>
             <CheckBox x:Name="Check_Lion" Content="Leeuwen" IsChecked="True" Margin="30,120,120,0"/>
             <CheckBox x:Name="Check_Elephant" Content="Olifanten" IsChecked="True" Margin="30,170,120,0"/>
         </Grid>
         <DataGrid x:Name="Animal_View" ItemsSource="{Binding Source=animals}" Margin="250,30,300,30" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Disabled" >
             <DataGrid.Columns>
+                <DataGridTemplateColumn x:Name="IconCollum">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Icon}" Width="20" Height="20"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn x:Name="NameCollum" Binding="{Binding Name}" Header="Name" Width="220" />
                 <DataGridTextColumn x:Name="EnergyCollum" Binding="{Binding Energy}" Header="Energy" Width="400" />
             </DataGrid.Columns>
